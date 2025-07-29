@@ -52,6 +52,19 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				brownie: {
+					gold: 'hsl(var(--brownie-gold))',
+					brown: 'hsl(var(--brownie-brown))',
+					dark: 'hsl(var(--brownie-dark))',
+					light: 'hsl(var(--brownie-light))',
+					cream: 'hsl(var(--brownie-cream))'
+				},
+				chat: {
+					'user-bg': 'hsl(var(--chat-user-bg))',
+					'user-text': 'hsl(var(--chat-user-text))',
+					'bot-bg': 'hsl(var(--chat-bot-bg))',
+					'bot-text': 'hsl(var(--chat-bot-text))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
