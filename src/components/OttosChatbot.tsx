@@ -21,10 +21,13 @@ export const OttosChatbot = () => {
       id: "1",
       text: "Olá! Bem-vindo à Otto's Brownie! 🍫 Sou seu assistente virtual e estou aqui para te ajudar com informações sobre nossos deliciosos brownies artesanais. Como posso te ajudar hoje?",
       isUser: false,
-      timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-    }
+      timestamp: new Date().toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    },
   ]);
-  
+
   const [isTyping, setIsTyping] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -32,7 +35,9 @@ export const OttosChatbot = () => {
   const scrollToBottom = () => {
     setTimeout(() => {
       if (scrollAreaRef.current) {
-        const scrollElement = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+        const scrollElement = scrollAreaRef.current.querySelector(
+          "[data-radix-scroll-area-viewport]"
+        );
         if (scrollElement) {
           scrollElement.scrollTop = scrollElement.scrollHeight;
         }
@@ -49,24 +54,49 @@ export const OttosChatbot = () => {
       id: Date.now().toString(),
       text: messageText,
       isUser: true,
-      timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+      timestamp: new Date().toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
     setIsTyping(true);
 
-    // Simulate AI response (aqui você conectará com o GPT Assistant)
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/askAssistant", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message: messageText }),
+      });
+
+      console.log("Response from assistant:", res);
+
+      const data = await res.json();
+
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Obrigado pela sua pergunta! Em breve conectarei com o assistente GPT para fornecer informações detalhadas sobre nossos brownies. Por enquanto, posso te dizer que temos brownies de chocolate tradicional, com nozes, veganos e sem glúten!",
+        text: data.text || "Desculpe, não consegui entender. 😅",
         isUser: false,
-        timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
+        timestamp: new Date().toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       };
-      
-      setMessages(prev => [...prev, botResponse]);
+
+      setMessages((prev) => [...prev, botResponse]);
+    } catch (error) {
+      console.error("Erro ao chamar assistant:", error);
+      toast({
+        title: "Erro",
+        description: "Não foi possível obter resposta do assistente.",
+        variant: "destructive",
+      });
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const handleReset = () => {
@@ -75,8 +105,11 @@ export const OttosChatbot = () => {
         id: "1",
         text: "Olá! Bem-vindo à Otto's Brownie! 🍫 Sou seu assistente virtual e estou aqui para te ajudar com informações sobre nossos deliciosos brownies artesanais. Como posso te ajudar hoje?",
         isUser: false,
-        timestamp: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-      }
+        timestamp: new Date().toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      },
     ]);
     toast({
       title: "Chat reiniciado",
@@ -89,7 +122,7 @@ export const OttosChatbot = () => {
       <div className="container mx-auto max-w-4xl p-4">
         <Card className="h-[90vh] flex flex-col shadow-2xl border-brownie-light/50 overflow-hidden">
           <ChatHeader />
-          
+
           <div className="flex-1 flex flex-col min-h-0">
             <div className="flex justify-end p-3 border-b border-border">
               <Button
@@ -113,7 +146,7 @@ export const OttosChatbot = () => {
                     timestamp={message.timestamp}
                   />
                 ))}
-                
+
                 {isTyping && (
                   <div className="flex gap-3 mb-4">
                     <div className="w-8 h-8 rounded-full bg-brownie-gold border-2 border-brownie-gold flex items-center justify-center">
