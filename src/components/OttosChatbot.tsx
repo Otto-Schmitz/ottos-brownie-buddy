@@ -64,7 +64,7 @@ export const OttosChatbot = () => {
     setIsTyping(true);
 
     try {
-      const res = await fetch("/api/askAssistant", {
+      const res = await fetch("https://assistant-response.onrender.com/ask", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -76,9 +76,11 @@ export const OttosChatbot = () => {
 
       const data = await res.json();
 
+      console.log("Data from assistant:", data);
+
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
-        text: data.text || "Desculpe, não consegui entender. 😅",
+        text: data.response || "Desculpe, não consegui entender. 😅",
         isUser: false,
         timestamp: new Date().toLocaleTimeString("pt-BR", {
           hour: "2-digit",
