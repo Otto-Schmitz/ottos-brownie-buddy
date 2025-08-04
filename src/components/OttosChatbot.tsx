@@ -7,6 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { set } from "date-fns";
 
 interface Message {
   id: string;
@@ -16,6 +17,7 @@ interface Message {
 }
 
 export const OttosChatbot = () => {
+  const [thread_id, setThread_id] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -69,14 +71,10 @@ export const OttosChatbot = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: messageText }),
+        body: JSON.stringify({ message: messageText, thread_id: thread_id }),
       });
 
-      console.log("Response from assistant:", res);
-
       const data = await res.json();
-
-      console.log("Data from assistant:", data);
 
       const botResponse: Message = {
         id: (Date.now() + 1).toString(),
@@ -89,6 +87,7 @@ export const OttosChatbot = () => {
       };
 
       setMessages((prev) => [...prev, botResponse]);
+      setThread_id(data.thread_id || null);
     } catch (error) {
       console.error("Erro ao chamar assistant:", error);
       toast({
@@ -113,6 +112,7 @@ export const OttosChatbot = () => {
         }),
       },
     ]);
+    setThread_id(null);
     toast({
       title: "Chat reiniciado",
       description: "A conversa foi reiniciada com sucesso.",
