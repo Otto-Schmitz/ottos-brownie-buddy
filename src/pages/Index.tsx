@@ -1,7 +1,7 @@
-import { OttosChatbot } from "@/components/OttosChatbot";
+import { Chatbot } from "@/components/Chatbot";
 
 const Index = () => {
-  return <OttosChatbot />;
+  return <Chatbot />;
 };
 
 export default Index;

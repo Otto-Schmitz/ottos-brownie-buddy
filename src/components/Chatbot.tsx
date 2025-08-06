@@ -16,7 +16,7 @@ interface Message {
   timestamp: string;
 }
 
-export const OttosChatbot = () => {
+export const Chatbot = () => {
   const [thread_id, setThread_id] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
