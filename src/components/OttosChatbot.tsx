@@ -71,7 +71,11 @@ export const OttosChatbot = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: messageText, thread_id: thread_id }),
+        body: JSON.stringify({ 
+          message: messageText, 
+          thread_id: thread_id, 
+          assistant_id: import.meta.env.VITE_OPENAI_ASSISTANT_ID 
+        }),
       });
 
       const data = await res.json();
